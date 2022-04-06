@@ -1,0 +1,143 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+spec:
+  features:
+    neutron:
+      dns_servers:
+      - 10.96.66.249
+      external_networks:
+      - bridge: br-ex
+        interface: veth-phy
+        mtu: null
+        network_types:
+        - flat
+        physnet: physnet1
+        vlan_ranges: null
+      floating_network:
+        enabled: true
+        physnet: physnet1
+        subnet:
+          gateway: 10.11.12.23
+          pool_end: 10.11.12.200
+          pool_start: 10.11.12.100
+          range: 10.11.12.0/24
+      tunnel_interface: eth0
+    nova:
+      images:
+        backend: local
+      live_migration_interface: eth0
+    services:
+    - object-storage
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          -----BEGIN CERTIFICATE-----
+          MIIDpjCCAo6gAwIBAgIUSsSE4WS7LpBXIHysO05c2zp6IyIwDQYJKoZIhvcNAQEL
+          BQAwFTETMBEGA1UEAxMKa3ViZXJuZXRlczAeFw0yMjAzMjkxMTM5MDBaFw0yMzAz
+          MjkxMTM5MDBaMFoxCzAJBgNVBAYTAlVTMRYwFAYDVQQIEw1TYW4gRnJhbmNpc2Nv
+          MQswCQYDVQQHEwJDQTEmMCQGA1UEAwwdKi5vcGVuc3RhY2suc3ZjLmNsdXN0ZXIu
+          bG9jYWwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDVH1zpcs14vq71
+          2yEA7lJbccZ/tnSKpQyuhAxwl7bs5OV7y/GHyuUEutrcVw6Y8UDdHTG8nRflgL03
+          DxLiOuYkPUTQWINcNxLcF9Z37d7lf1Xqwvh+ZbA3m4NPSKnU8+ZxFRhZGSTDbkJ2
+          IiWKFo5M1Qec4aeSD4K5DbBtfqchULALjffJfOy1DcFWEIM44aALclEjbZ2dAhdz
+          8jWnYkexdPVmfoXVz3eCRgjM8fJr5ZDr99qEfGfuYEyeP6yOY1jLDi8+pTK8M5Ql
+          f9MrKFc5kd+IYfRVHJqLX1nspXPZPy33lMQO0Rn0KZaioXWw8U3jtuTvLRBVw2F1
+          T2YYdgAfAgMBAAGjgagwgaUwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsG
+          AQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBQBWU7cOVwT
+          Uz4OD+t1N0D7qgcDlDBHBgNVHREEQDA+ggwqLmp1c3Qud29ya3OCDyouaXQuanVz
+          dC53b3Jrc4IdKi5vcGVuc3RhY2suc3ZjLmNsdXN0ZXIubG9jYWwwDQYJKoZIhvcN
+          AQELBQADggEBAALlaqAkVX4scQ/gas2UxLQfWNve3eE0hE0+fQl4Qe/dNZAzSNhg
+          37XnJzNK8/NjxiZY/o1uYhTvqBooRkIPcTgKblpgD29KOtJEryuj10YSw0le82fX
+          rx/CwTdWfz857Q8wU1kh6iOQiBz7MX962MGvnUmr88UBuVtvDOmnlegpAGL3h0K2
+          XGcVBu5lGHRjGdgnamuOHH/WdDPngpalfAq+W3q04z5HW1LPWobMmuKyaM7Ss4+U
+          jdrWVbwFgugZr0vDrd+8sk3pHRB8zqDOwIxaNrn3X9J7gPPIkClysOBvVOsZFbeo
+          uhvxcNIO+UpKTCS6QOr6ORDNZ9AbyavFjM0=
+          -----END CERTIFICATE-----
+        api_key: |-
+          -----BEGIN RSA PRIVATE KEY-----
+          MIIEpAIBAAKCAQEA1R9c6XLNeL6u9dshAO5SW3HGf7Z0iqUMroQMcJe27OTle8vx
+          h8rlBLra3FcOmPFA3R0xvJ0X5YC9Nw8S4jrmJD1E0FiDXDcS3BfWd+3e5X9V6sL4
+          fmWwN5uDT0ip1PPmcRUYWRkkw25CdiIlihaOTNUHnOGnkg+CuQ2wbX6nIVCwC433
+          yXzstQ3BVhCDOOGgC3JRI22dnQIXc/I1p2JHsXT1Zn6F1c93gkYIzPHya+WQ6/fa
+          hHxn7mBMnj+sjmNYyw4vPqUyvDOUJX/TKyhXOZHfiGH0VRyai19Z7KVz2T8t95TE
+          DtEZ9CmWoqF1sPFN47bk7y0QVcNhdU9mGHYAHwIDAQABAoIBAA4phmAQ++xxJ2k5
+          BYltTNW8yscD1dy8uQoDxlvZCRPW5hUC6WrvpaZZ0F9h/ZtWNMw8u2hgPA1JL8mv
+          275i0ZZI6AC8UQZYto0fnGXdzbkMbCYsjJzBnyMi12f2WSrIhmCvWS3aiOHfutTk
+          0f/KHeynH1lieWMwWqx3Z2jvSKXi+p8SccFwbOszefwa7g33E9EMIj4NPndnZ5Ko
+          DATzprbz9nT99mKJtgLbof2/xFVQzEw3v9T+g1ZwF8psm4PsnoN19XCy4oQIvymE
+          JE4P9aCM9WgbXBGdOFRgVGaRpME6dkC8WQ7yNZiqVppLkGbBcXOZsyE62SVjElTf
+          ktS6VlECgYEA+3LoMp3hbzykDMnbuJ/87fFjanXxM2jF/qQFTyXvrMfykW9g9u9h
+          DSLlRcquue39i4ktGSS/rik0SvX8gFDMR6F6O0v4yGrChB1+K3uSpCeVIVfFVGFF
+          hcSjhRPD6wyn72iiRFuz3DBZh7qLNPmh5gsYsUefhrisSe0xpODaaukCgYEA2Pre
+          vbY1AqLFsJM01z3jtZAJ4zLWB0r9yc3j7PjL6ocRF26215XVjCOs5QWRktYhxMhO
+          uGUvCgMLi3kYUtRrXZNcDlyU1KlOi6Lwy3kEwkPcD+T4yUdLiJpBSC93PFR7/+JT
+          NX+LuLABts/54OGGiCycKQTXwiYozVnNARi8nccCgYEA4dK+6saUMfy6MKoRZOx6
+          kY/bAz/NUahlOV5BTmX5rKkeFrN62AsAlHWkh1uSNHWi4fBeylgQte9XgYMONIdc
+          D3Dcf+ipFAWdkF2UdKTUfAz4iCt1k2SQtaR2XwvzRmPlZsQIB3B8ReI+ZgGJCBix
+          6BJLKNv0T2AHi5U0oqk2QBECgYEAkp2R/Sct0sYiRxpxTjAnufvGcptbPDpUGxTg
+          urOzNppl1iudqTc5wSQqI+cLYukGkG25o6fbjSxZlLkS0oVutyBnx9yPRNPSm1BS
+          3Wq86HfqL2NNKNTgGUICcsCAFWgREergxvmUdAuaXOlTs70wprteGemH0UzvrTLM
+          77zDVukCgYBs3DSMLt9KxTnpexSTgfvcHQMsRRVQxR8xl60sEndBxSvw5l2iLMiT
+          GN8RNKeqVSz+6SxvUdvnQ0Udd/A4tYxaSjBHP38ztPNhhLGF5GuJ3Rgx8Ipw2CDA
+          KlsRqIbxZ8TdyrcvQbKBAkpAyGDnVoju6lBU9BCFV36HyMI7GB7+IA==
+          -----END RSA PRIVATE KEY-----
+        ca_cert: |-
+          -----BEGIN CERTIFICATE-----
+          MIICyDCCAbCgAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl
+          cm5ldGVzMB4XDTE5MDcxNTEyMTczMFoXDTI5MDcxMjEyMTczMFowFTETMBEGA1UE
+          AxMKa3ViZXJuZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKs
+          3cxUNr7uIvIpnYAu9hM03zIgycdzar1deSIU2EZkEv20QOa6+w/yUxRhQK1pFhok
+          ceqVuOnGnSUW3Uf+mvAd0IgCkCUIWnDOkZE83MhKTa7FXZpEYSBpjNwziLyAffQB
+          IXdXs0Zf4RHoSmm2msJy2iL6tKzPWrUI8iJINKY687RubX7WTxvFUd/By6VMg1H/
+          F3UEi/WGBCrYbWeZhjk222N/5T1PNkhZjLM4l7ukedUaK2b9bKsRU7N/p2f9hhDJ
+          +x2arKmGqGkKkRQnS/19Nlwom2cSU8z36nOghJHv6hWIMbY/dUT8sGLlL/nSa2d0
+          38rhFhOpB/tu3Wu50NECAwEAAaMjMCEwDgYDVR0PAQH/BAQDAgKkMA8GA1UdEwEB
+          /wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBACpTF3CTDaRUOUnIKo2p7x/HzJGM
+          DwrQqzKOJ1I4WzeuGVLJ4OUn9wU7jce2oMYZmOw+2opG7CvqM2xx6AQa2OxqJt8E
+          KoqviidpTgXqWhAaRbRGsF1IxEwEgbiI9sH0f0pQRZBVPKv+LnNlQoip9ZMgoHJ8
+          f25YSPKBHhMLEvCdsWy6ZRqSx7lk0NK+NiFeL3ZDlkiVveNmejM2OSzsov2wkUu3
+          Hvo/ugw5tNhtX7Q1iEyE2aFvsmqE1PTOE3zly7xRALAX8WYD5lNc0qGFvoh3x+79
+          uKVi5MUP48Voc72rJ0n7iaK8dr/byL6S5Qz2PuG9slbDQrDoacBeyjO6hiQ=
+          -----END CERTIFICATE-----
+    stacklight:
+      user:
+        password: stacklight
+  internal_domain_name: cluster.local
+  local_volume_storage_class: lvp-fake-root
+  openstack_version: ussuri
+  persistent_volume_storage_class: mirablock-k8s-block-hdd
+  preset: compute
+  public_domain_name: it.just.works
+  services:
+    compute:
+      nova:
+        values:
+          conf:
+            nova:
+              libvirt:
+                virt_type: qemu
+    load-balancer:
+      octavia:
+        values:
+          conf:
+            octavia:
+              api_settings:
+                default_provider_driver: amphora
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
+  size: single

@@ -1,0 +1,50 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+    name: check-backup-helper
+    namespace: openstack
+---
+apiVersion: v1
+kind: Pod
+metadata:
+    name: check-backup-helper
+    namespace: openstack
+    labels:
+      application: check-backup-helper
+spec:
+  nodeSelector:
+    openstack-control-plane: enabled
+  containers:
+    - name: helper
+      securityContext:
+        allowPrivilegeEscalation: false
+        runAsUser: 0
+        readOnlyRootFilesystem: true
+      command:
+        - sleep
+        - infinity
+      image: << image of mariadb container >>
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+        - name: pod-tmp
+          mountPath: /tmp
+        - mountPath: /var/backup
+          name: mysql-backup
+  restartPolicy: Never
+  serviceAccount: check-backup-helper
+  serviceAccountName: check-backup-helper
+  volumes:
+    - name: pod-tmp
+      emptyDir: {}
+    - name: mariadb-secrets
+      secret:
+        secretName: mariadb-secrets
+        defaultMode: 0444
+    - name: mariadb-bin
+      configMap:
+        name: mariadb-bin
+        defaultMode: 0555
+    - name: mysql-backup
+      persistentVolumeClaim:
+        claimName: mariadb-phy-backup-data

@@ -1,0 +1,1085 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: managed-ns
+---
+apiVersion: v1
+data:
+  password: YWRtaW4=
+  username: ZW5naW5lZXI=
+kind: Secret
+metadata:
+  labels:
+    kaas.mirantis.com/credentials: 'true'
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: cz815-cred
+  namespace: managed-ns
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/controlplane: controlplane
+    # we will use those label, to link machine to exact bmh node
+    kaas.mirantis.com/baremetalhost-id: cz7700
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: cz7700-mos-lab-control-noefi
+  namespace: managed-ns
+spec:
+  bmc:
+    address: 192.168.1.12
+    credentialsName: cz815-cred
+  bootMACAddress: 0c:c4:7a:34:52:04
+  bootMode: legacy
+  online: true
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/controlplane: controlplane
+    kaas.mirantis.com/baremetalhost-id: cz7741
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: cz7741-mos-lab-control-noefi
+  namespace: managed-ns
+spec:
+  bmc:
+    address: 192.168.1.76
+    credentialsName: cz815-cred
+  bootMACAddress: 0c:c4:7a:34:92:f4
+  bootMode: legacy
+  online: true
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/controlplane: controlplane
+    kaas.mirantis.com/baremetalhost-id: cz7743
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: cz7743-mos-lab-control-noefi
+  namespace: managed-ns
+spec:
+  bmc:
+    address: 192.168.1.78
+    credentialsName: cz815-cred
+  bootMACAddress: 0c:c4:7a:34:66:fc
+  bootMode: legacy
+  online: true
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/storage: storage
+    hostlabel.bm.kaas.mirantis.com/worker: worker
+    kaas.mirantis.com/baremetalhost-id: cz812
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: cz812-mos-lab-storage-worker-noefi
+  namespace: managed-ns
+spec:
+  bmc:
+    address: 192.168.1.182
+    credentialsName: cz815-cred
+  bootMACAddress: 0c:c4:7a:bc:ff:2e
+  bootMode: legacy
+  online: true
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/storage: storage
+    hostlabel.bm.kaas.mirantis.com/worker: worker
+    kaas.mirantis.com/baremetalhost-id: cz813
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: cz813-mos-lab-storage-worker-noefi
+  namespace: managed-ns
+spec:
+  bmc:
+    address: 192.168.1.183
+    credentialsName: cz815-cred
+  bootMACAddress: 0c:c4:7a:bc:fe:36
+  bootMode: legacy
+  online: true
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/storage: storage
+    hostlabel.bm.kaas.mirantis.com/worker: worker
+    kaas.mirantis.com/baremetalhost-id: cz814
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: cz814-mos-lab-storage-worker-noefi
+  namespace: managed-ns
+spec:
+  bmc:
+    address: 192.168.1.184
+    credentialsName: cz815-cre
+  bootMACAddress: 0c:c4:7a:bc:fb:20
+  bootMode: legacy
+  online: true
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHost
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/worker: worker
+    kaas.mirantis.com/baremetalhost-id: cz815
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: cz815-mos-lab-worker-noefi
+  namespace: managed-ns
+spec:
+  bmc:
+    address: 192.168.1.185
+    credentialsName: cz815-cred
+  bootMACAddress: 0c:c4:7a:bc:fc:3e
+  bootMode: legacy
+  online: true
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHostProfile
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    # This label indicates that this profile will be default in
+    # namespaces, so machines w\o exact profile selecting will use
+    # this template
+    kaas.mirantis.com/defaultBMHProfile: 'true'
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: bmhp-cluster-default
+  namespace: managed-ns
+spec:
+  devices:
+  - device:
+      byName: /dev/sda
+      minSizeGiB: 120
+      wipe: true
+    partitions:
+    - name: bios_grub
+      partflags:
+      - bios_grub
+      sizeGiB: 0.00390625
+      wipe: true
+    - name: uefi
+      partflags:
+      - esp
+      sizeGiB: 0.2
+      wipe: true
+    - name: config-2
+      sizeGiB: 0.0625
+      wipe: true
+    - name: lvm_dummy_part
+      sizeGiB: 1
+      wipe: true
+    - name: lvm_root_part
+      sizeGiB: 0
+      wipe: true
+  - device:
+      byName: /dev/sdb
+      minSizeGiB: 30
+      wipe: true
+  - device:
+      byName: /dev/sdc
+      minSizeGiB: 30
+      wipe: true
+    partitions:
+    - name: lvm_lvp_part
+      sizeGiB: 0
+      wipe: true
+  - device:
+      byName: /dev/sdd
+      wipe: true
+  fileSystems:
+  - fileSystem: vfat
+    partition: config-2
+  - fileSystem: vfat
+    mountPoint: /boot/efi
+    partition: uefi
+  - fileSystem: ext4
+    logicalVolume: root
+    mountPoint: /
+  - fileSystem: ext4
+    logicalVolume: lvp
+    mountPoint: /mnt/local-volumes/
+  grubConfig:
+    defaultGrubOptions:
+    - GRUB_DISABLE_RECOVERY="true"
+    - GRUB_PRELOAD_MODULES=lvm
+    - GRUB_TIMEOUT=30
+  kernelParameters:
+    modules:
+    - content: 'options kvm_intel nested=1'
+      filename: kvm_intel.conf
+    sysctl:
+      fs.aio-max-nr: '1048576'
+      fs.file-max: '9223372036854775807'
+      fs.inotify.max_user_instances: '4096'
+      kernel.core_uses_pid: '1'
+      kernel.dmesg_restrict: '1'
+      kernel.panic: '900'
+      net.ipv4.conf.all.rp_filter: '0'
+      net.ipv4.conf.default.rp_filter: '0'
+      net.ipv4.conf.k8s-ext.rp_filter: '0'
+      net.ipv4.conf.kalive-ext.rp_filter: '0'
+      net.ipv4.conf.m-pub.rp_filter: '0'
+      vm.max_map_count: '262144'
+  logicalVolumes:
+  - name: root
+    sizeGiB: 0
+    vg: lvm_root
+  - name: lvp
+    sizeGiB: 0
+    vg: lvm_lvp
+  postDeployScript: |
+    #!/bin/bash -ex
+    # used for test-debug only!
+    echo "root:r00tme" | sudo chpasswd
+    echo 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="deadline"' > /etc/udev/rules.d/60-ssd-scheduler.rules
+    echo $(date) 'post_deploy_script done' >> /root/post_deploy_done
+
+  preDeployScript: |
+    #!/bin/bash -ex
+    echo "$(date) pre_deploy_script done" >> /root/pre_deploy_done
+  volumeGroups:
+  - devices:
+    - partition: lvm_root_part
+    name: lvm_root
+  - devices:
+    - partition: lvm_lvp_part
+    name: lvm_lvp
+  - devices:
+    - partition: lvm_dummy_part
+    # here we can create lvm, but do not mount or format it somewhere
+    name: lvm_forawesomeapp
+---
+apiVersion: metal3.io/v1alpha1
+kind: BareMetalHostProfile
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: worker-storage1
+  namespace: managed-ns
+spec:
+  devices:
+  - device:
+      minSizeGiB: 120
+      wipe: true
+    partitions:
+    - name: bios_grub
+      partflags:
+      - bios_grub
+      sizeGiB: 0.00390625
+      wipe: true
+    - name: uefi
+      partflags:
+      - esp
+      sizeGiB: 0.2
+      wipe: true
+    - name: config-2
+      sizeGiB: 0.0625
+      wipe: true
+    # Create dummy partition w\o mounting
+    - name: lvm_dummy_part
+      sizeGiB: 1
+      wipe: true
+    - name: lvm_root_part
+      sizeGiB: 0
+      wipe: true
+  - device:
+      # Will be used for Ceph, so required to be wiped
+      byName: /dev/sdb
+      minSizeGiB: 30
+      wipe: true
+  - device:
+      byName: /dev/nvme0n1
+      minSizeGiB: 30
+      wipe: true
+    partitions:
+    - name: lvm_lvp_part
+      sizeGiB: 0
+      wipe: true
+  - device:
+      byName: /dev/sde
+      wipe: true
+  - device:
+      byName: /dev/sdf
+      minSizeGiB: 30
+      wipe: true
+    partitions:
+      - name: lvm_lvp_part_sdf
+        wipe: true
+        sizeGiB: 0
+  fileSystems:
+  - fileSystem: vfat
+    partition: config-2
+  - fileSystem: vfat
+    mountPoint: /boot/efi
+    partition: uefi
+  - fileSystem: ext4
+    logicalVolume: root
+    mountPoint: /
+  - fileSystem: ext4
+    logicalVolume: lvp
+    mountPoint: /mnt/local-volumes/
+  grubConfig:
+    defaultGrubOptions:
+    - GRUB_DISABLE_RECOVERY="true"
+    - GRUB_PRELOAD_MODULES=lvm
+    - GRUB_TIMEOUT=30
+  kernelParameters:
+    modules:
+    - content: 'options kvm_intel nested=1'
+      filename: kvm_intel.conf
+    sysctl:
+      fs.aio-max-nr: '1048576'
+      fs.file-max: '9223372036854775807'
+      fs.inotify.max_user_instances: '4096'
+      kernel.core_uses_pid: '1'
+      kernel.dmesg_restrict: '1'
+      kernel.panic: '900'
+      net.ipv4.conf.all.rp_filter: '0'
+      net.ipv4.conf.default.rp_filter: '0'
+      net.ipv4.conf.k8s-ext.rp_filter: '0'
+      net.ipv4.conf.kalive-ext.rp_filter: '0'
+      net.ipv4.conf.m-pub.rp_filter: '0'
+      vm.max_map_count: '262144'
+  logicalVolumes:
+  - name: root
+    sizeGiB: 0
+    vg: lvm_root
+  - name: lvp
+    sizeGiB: 0
+    vg: lvm_lvp
+  postDeployScript: |
+
+    #!/bin/bash -ex
+
+    # used for test-debug only! That would allow operator to logic via TTY.
+    echo "root:r00tme" | sudo chpasswd
+    # Just an example for enforcing "ssd" disks to be switched to use "deadline" i\o scheduler.
+    echo 'ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="deadline"' > /etc/udev/   rules.d/60-ssd-scheduler.rules
+    echo $(date) 'post_deploy_script done' >> /root/post_deploy_done
+
+  preDeployScript: |
+    #!/bin/bash -ex
+    echo "$(date) pre_deploy_script done" >> /root/pre_deploy_done
+
+  volumeGroups:
+  - devices:
+    - partition: lvm_root_part
+    name: lvm_root
+  - devices:
+    - partition: lvm_lvp_part
+    - partition: lvm_lvp_part_sdf
+    name: lvm_lvp
+  - devices:
+    - partition: lvm_dummy_part
+    name: lvm_forawesomeapp
+---
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: L2Template
+metadata:
+  labels:
+    bm-1490-template-controls-netplan: anymagicstring
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: bm-1490-template-controls-netplan
+  namespace: managed-ns
+spec:
+  ifMapping:
+  - enp9s0f0
+  - enp9s0f1
+  - eno1
+  - ens3f1
+  l3Layout:
+  - scope: namespace
+    subnetName: lcm-nw
+  - scope: namespace
+    subnetName: storage-frontend
+  - scope: namespace
+    subnetName: storage-backend
+  - scope: namespace
+    subnetName: metallb-public-for-extiface
+npTemplate: |-
+  version: 2
+  ethernets:
+    {{nic 0}}:
+      dhcp4: false
+      dhcp6: false
+      match:
+        macaddress: {{mac 0}}
+      set-name: {{nic 0}}
+      mtu: 1500
+    {{nic 1}}:
+      dhcp4: false
+      dhcp6: false
+      match:
+        macaddress: {{mac 1}}
+      set-name: {{nic 1}}
+      mtu: 1500
+    {{nic 2}}:
+      dhcp4: false
+      dhcp6: false
+      match:
+        macaddress: {{mac 2}}
+      set-name: {{nic 2}}
+      mtu: 1500
+    {{nic 3}}:
+      dhcp4: false
+      dhcp6: false
+      match:
+        macaddress: {{mac 3}}
+      set-name: {{nic 3}}
+      mtu: 1500
+  bonds:
+    bond0:
+      parameters:
+        mode: 802.3ad
+        #transmit-hash-policy: layer3+4
+        #mii-monitor-interval: 100
+      interfaces:
+        - {{ nic 0 }}
+        - {{ nic 1 }}
+    bond1:
+      parameters:
+        mode: 802.3ad
+        #transmit-hash-policy: layer3+4
+        #mii-monitor-interval: 100
+      interfaces:
+        - {{ nic 2 }}
+        - {{ nic 3 }}
+  vlans:
+    stor-f:
+      id: 1494
+      link: bond1
+      addresses:
+        - {{ip "stor-f:storage-frontend"}}
+    stor-b:
+      id: 1489
+      link: bond1
+      addresses:
+        - {{ip "stor-b:storage-backend"}}
+    m-pub:
+      id: 1491
+      link: bond0
+  bridges:
+    # we set up keepalived (loadbalancer_host) addr from metallb NW.
+    # so, to perform guessing keepalived interface on master nodes,
+    # we need to pass addresses
+    kalive-ext:
+      interfaces: [m-pub]
+      addresses:
+        - {{ ip "kalive-ext:metallb-public-for-extiface" }}
+    #``k8s-lcm`` name is mandatory here.
+    k8s-lcm:
+      dhcp4: false
+      dhcp6: false
+      gateway4: {{ gateway_from_subnet "lcm-nw" }}
+      addresses:
+        - {{ ip "k8s-lcm:lcm-nw" }}
+      nameservers:
+        addresses: [ 172.18.176.6 ]
+      interfaces:
+          - bond0
+---
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: L2Template
+metadata:
+  labels:
+    bm-1490-template-workers-netplan: anymagicstring
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: bm-1490-template-workers-netplan
+  namespace: managed-ns
+spec:
+  ifMapping:
+  - eno1
+  - eno2
+  - ens7f0
+  - ens7f1
+  l3Layout:
+  - scope: namespace
+    subnetName: lcm-nw
+  - scope: namespace
+    subnetName: storage-frontend
+  - scope: namespace
+    subnetName: storage-backend
+  - scope: namespace
+    subnetName: metallb-public-for-extiface
+    npTemplate: |-
+      version: 2
+      ethernets:
+        {{nic 0}}:
+          match:
+            macaddress: {{mac 0}}
+          set-name: {{nic 0}}
+          mtu: 1500
+        {{nic 1}}:
+          dhcp4: false
+          dhcp6: false
+          match:
+            macaddress: {{mac 1}}
+          set-name: {{nic 1}}
+          mtu: 1500
+        {{nic 2}}:
+          dhcp4: false
+          dhcp6: false
+          match:
+            macaddress: {{mac 2}}
+          set-name: {{nic 2}}
+          mtu: 1500
+        {{nic 3}}:
+          dhcp4: false
+          dhcp6: false
+          match:
+            macaddress: {{mac 3}}
+          set-name: {{nic 3}}
+          mtu: 1500
+      bonds:
+        bond0:
+          interfaces:
+            - {{ nic 1 }}
+        bond1:
+          parameters:
+            mode: 802.3ad
+            #transmit-hash-policy: layer3+4
+            #mii-monitor-interval: 100
+          interfaces:
+            - {{ nic 2 }}
+            - {{ nic 3 }}
+      vlans:
+        stor-f:
+          id: 1494
+          link: bond1
+          addresses:
+            - {{ip "stor-f:storage-frontend"}}
+        stor-b:
+          id: 1489
+          link: bond1
+          addresses:
+            - {{ip "stor-b:storage-backend"}}
+        m-pub:
+          id: 1491
+          link: {{ nic 1 }}
+      bridges:
+        #``k8s-lcm`` name is mandatory here.
+        k8s-lcm:
+          interfaces:
+            - {{ nic 0 }}
+          gateway4: {{ gateway_from_subnet "lcm-nw" }}
+          addresses:
+            - {{ ip "k8s-lcm:lcm-nw" }}
+          nameservers:
+            addresses: [ 172.18.176.6 ]
+        k8s-ext:
+          interfaces: [m-pub]
+---
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: L2Template
+metadata:
+  labels:
+    bm-1490-template-controls-netplan-cz7700-pxebond: anymagicstring
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: bm-1490-template-controls-netplan-cz7700-pxebond
+  namespace: managed-ns
+spec:
+  ifMapping:
+  - enp9s0f0
+  - enp9s0f1
+  - eno1
+  - ens3f1
+  l3Layout:
+  - scope: namespace
+    subnetName: lcm-nw
+  - scope: namespace
+    subnetName: storage-frontend
+  - scope: namespace
+    subnetName: storage-backend
+  - scope: namespace
+    subnetName: metallb-public-for-extiface
+npTemplate: |-
+  version: 2
+  ethernets:
+    {{nic 0}}:
+      dhcp4: false
+      dhcp6: false
+      match:
+        macaddress: {{mac 0}}
+      set-name: {{nic 0}}
+      mtu: 1500
+    {{nic 1}}:
+      dhcp4: false
+      dhcp6: false
+      match:
+        macaddress: {{mac 1}}
+      set-name: {{nic 1}}
+      mtu: 1500
+    {{nic 2}}:
+      dhcp4: false
+      dhcp6: false
+      match:
+        macaddress: {{mac 2}}
+      set-name: {{nic 2}}
+      mtu: 1500
+    {{nic 3}}:
+      dhcp4: false
+      dhcp6: false
+      match:
+        macaddress: {{mac 3}}
+      set-name: {{nic 3}}
+      mtu: 1500
+  bonds:
+    bond0:
+      parameters:
+        mode: 802.3ad
+        #transmit-hash-policy: layer3+4
+        #mii-monitor-interval: 100
+      interfaces:
+        - {{ nic 0 }}
+        - {{ nic 1 }}
+    bond1:
+      parameters:
+        mode: 802.3ad
+        #transmit-hash-policy: layer3+4
+        #mii-monitor-interval: 100
+      interfaces:
+        - {{ nic 2 }}
+        - {{ nic 3 }}
+  vlans:
+    stor-f:
+      id: 1494
+      link: bond1
+      addresses:
+        - {{ip "stor-f:storage-frontend"}}
+    stor-b:
+      id: 1489
+      link: bond1
+      addresses:
+        - {{ip "stor-b:storage-backend"}}
+    m-pub:
+      id: 1491
+      link: bond0
+  bridges:
+    # we set up keepalived (loadbalancer_host) addr from metallb NW.
+    # so, to perform guessing keepalived interface on master nodes,
+    # we need to pass addresses.
+    kalive-ext:
+      interfaces: [m-pub]
+      addresses:
+        - {{ ip "kalive-ext:metallb-public-for-extiface" }}
+    #``k8s-lcm`` name is mandatory here.
+    k8s-lcm:
+      dhcp4: false
+      dhcp6: false
+      gateway4: {{ gateway_from_subnet "lcm-nw" }}
+      addresses:
+        - {{ ip "k8s-lcm:lcm-nw" }}
+      nameservers:
+        addresses: [ 172.18.176.6 ]
+      interfaces:
+        - bond0
+---
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: Subnet
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    ipam/SVC-k8s-lcm: '1'
+    kaas.mirantis.com/region: region-one
+  name: lcm-nw
+  namespace: managed-ns
+spec:
+  cidr: 172.16.170.0/24
+  excludeRanges:
+  - 172.16.168.3
+  - 172.16.170.150
+  gateway: 172.16.170.1
+  includeRanges:
+  - 172.16.170.150-172.16.170.250
+---
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: Subnet
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    ipam/SVC-MetalLB: '1'
+    kaas.mirantis.com/region: region-one
+  name: metallb-public-for-managed
+  namespace: managed-ns
+spec:
+  cidr: 172.16.168.0/24
+  excludeRanges:
+  - 172.16.168.3
+  - 172.16.168.1-172.16.168.2
+  - 172.16.168.10-172.16.168.30
+  gateway: 172.16.168.1
+---
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: Subnet
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    kaas.mirantis.com/region: region-one
+  name: metallb-public-for-extiface
+  namespace: managed-ns
+spec:
+  cidr: 172.16.168.0/24
+  gateway: 172.16.168.1
+  includeRanges:
+  - 172.16.168.10-172.16.168.30
+---
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: Subnet
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    ipam/SVC-ceph-cluster: '1'
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: storage-backend
+  namespace: managed-ns
+spec:
+  cidr: 10.12.0.0/24
+---
+apiVersion: ipam.mirantis.com/v1alpha1
+kind: Subnet
+metadata:
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    ipam/SVC-ceph-public: '1'
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: storage-frontend
+  namespace: managed-ns
+spec:
+  cidr: 10.12.1.0/24
+---
+apiVersion: kaas.mirantis.com/v1alpha1
+kind: PublicKey
+metadata:
+  name: mos-lab-key
+  namespace: managed-ns
+spec:
+  publicKey: ssh-rsa AAEXAMPLEXXX
+---
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Cluster
+metadata:
+  annotations:
+    kaas.mirantis.com/lcm: 'true'
+  labels:
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  name: mos-lab
+  namespace: managed-ns
+spec:
+  clusterNetwork:
+    pods:
+      cidrBlocks:
+      - 192.168.0.0/16
+    services:
+      cidrBlocks:
+      - 10.232.0.0/18
+  providerSpec:
+    value:
+      apiVersion: baremetal.k8s.io/v1alpha1
+      dedicatedControlPlane: false
+      dnsNameservers:
+      - 172.18.176.6
+      - 172.19.80.70
+      helmReleases:
+      - name: ceph-controller
+      - enabled: true
+        name: stacklight
+        values:
+          alertmanagerSimpleConfig:
+            email:
+              enabled: false
+            slack:
+              enabled: false
+          elasticsearch:
+            logstashRetentionTime: '30'
+            persistentVolumeClaimSize: 30Gi
+          highAvailabilityEnabled: false
+          logging:
+            enabled: false
+          prometheusServer:
+            customAlerts: []
+            persistentVolumeClaimSize: 16Gi
+            retentionSize: 15GB
+            retentionTime: 15d
+            watchDogAlertEnabled: false
+      - name: metallb
+        values:
+          configInline:
+            address-pools:
+            - addresses:
+              - 172.16.168.31-172.16.168.100
+              name: default
+              protocol: layer2
+      kind: BaremetalClusterProviderSpec
+      loadBalancerHost: 172.16.168.3
+      publicKeys:
+      - name: mos-lab-key
+      region: region-one
+      release: mke-5-16-0-3-3-6
+---
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Machine
+metadata:
+  name: cz7700-mos-lab-control-noefi-1
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    cluster.sigs.k8s.io/control-plane: controlplane
+    hostlabel.bm.kaas.mirantis.com/controlplane: controlplane
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  namespace: managed-ns
+spec:
+  providerSpec:
+    value:
+      apiVersion: baremetal.k8s.io/v1alpha1
+      hostSelector:
+        matchLabels:
+          kaas.mirantis.com/baremetalhost-id: cz7700
+      kind: BareMetalMachineProviderSpec
+      l2TemplateSelector:
+        label: bm-1490-template-controls-netplan-cz7700-pxebond
+      publicKeys:
+      - name: mos-lab-key
+---
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Machine
+metadata:
+  name: cz7741-mos-lab-control-noefi-2
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    cluster.sigs.k8s.io/control-plane: controlplane
+    hostlabel.bm.kaas.mirantis.com/controlplane: controlplane
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  namespace: managed-ns
+spec:
+  providerSpec:
+    value:
+      apiVersion: baremetal.k8s.io/v1alpha1
+      bareMetalHostProfile:
+        name: bmhp-cluster-default
+        namespace: managed-ns
+      hostSelector:
+        matchLabels:
+          kaas.mirantis.com/baremetalhost-id: cz7741
+      kind: BareMetalMachineProviderSpec
+      l2TemplateSelector:
+        label: bm-1490-template-controls-netplan
+      publicKeys:
+      - name: mos-lab-key
+---
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Machine
+metadata:
+  name: cz7743-mos-lab-control-noefi-3
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    cluster.sigs.k8s.io/control-plane: controlplane
+    hostlabel.bm.kaas.mirantis.com/controlplane: controlplane
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  namespace: managed-ns
+spec:
+  providerSpec:
+    value:
+      apiVersion: baremetal.k8s.io/v1alpha1
+      bareMetalHostProfile:
+        name: bmhp-cluster-default
+        namespace: managed-ns
+      hostSelector:
+        matchLabels:
+          kaas.mirantis.com/baremetalhost-id: cz7743
+      kind: BareMetalMachineProviderSpec
+      l2TemplateSelector:
+        label: bm-1490-template-controls-netplan
+      publicKeys:
+      - name: mos-lab-key
+---
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Machine
+metadata:
+  name: cz812-mos-lab-storage-worker-noefi-1
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/storage: storage
+    hostlabel.bm.kaas.mirantis.com/worker: worker
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  namespace: managed-ns
+spec:
+  providerSpec:
+    value:
+      apiVersion: baremetal.k8s.io/v1alpha1
+      bareMetalHostProfile:
+        name: worker-storage1
+        namespace: managed-ns
+      hostSelector:
+        matchLabels:
+          kaas.mirantis.com/baremetalhost-id: cz812
+      kind: BareMetalMachineProviderSpec
+      l2TemplateSelector:
+        label: bm-1490-template-workers-netplan
+      publicKeys:
+      - name: mos-lab-key
+---
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Machine
+metadata:
+  name: cz813-mos-lab-storage-worker-noefi-2
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/storage: storage
+    hostlabel.bm.kaas.mirantis.com/worker: worker
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  namespace: managed-ns
+spec:
+  providerSpec:
+    value:
+      apiVersion: baremetal.k8s.io/v1alpha1
+      bareMetalHostProfile:
+        name: worker-storage1
+        namespace: managed-ns
+      hostSelector:
+        matchLabels:
+          kaas.mirantis.com/baremetalhost-id: cz813
+      kind: BareMetalMachineProviderSpec
+      l2TemplateSelector:
+        label: bm-1490-template-workers-netplan
+      publicKeys:
+      - name: mos-lab-key
+---
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Machine
+metadata:
+  name: cz814-mos-lab-storage-worker-noefi-3
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/storage: storage
+    hostlabel.bm.kaas.mirantis.com/worker: worker
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+  namespace: managed-ns
+spec:
+  providerSpec:
+    value:
+      apiVersion: baremetal.k8s.io/v1alpha1
+      bareMetalHostProfile:
+        name: worker-storage1
+        namespace: managed-ns
+      hostSelector:
+        matchLabels:
+          kaas.mirantis.com/baremetalhost-id: cz814
+      kind: BareMetalMachineProviderSpec
+      l2TemplateSelector:
+        label: bm-1490-template-workers-netplan
+      publicKeys:
+      - name: mos-lab-key
+---
+apiVersion: cluster.k8s.io/v1alpha1
+kind: Machine
+metadata:
+  name: cz815-mos-lab-worker-noefi-4
+  labels:
+    cluster.sigs.k8s.io/cluster-name: mos-lab
+    hostlabel.bm.kaas.mirantis.com/worker: worker
+    kaas.mirantis.com/provider: baremetal
+    kaas.mirantis.com/region: region-one
+    si-role/node-for-delete: 'true'
+  namespace: managed-ns
+spec:
+  providerSpec:
+    value:
+      apiVersion: baremetal.k8s.io/v1alpha1
+      bareMetalHostProfile:
+        name: worker-storage1
+        namespace: managed-ns
+      hostSelector:
+        matchLabels:
+          kaas.mirantis.com/baremetalhost-id: cz815
+      kind: BareMetalMachineProviderSpec
+      l2TemplateSelector:
+        label: bm-1490-template-workers-netplan
+      publicKeys:
+      - name: mos-lab-key
+---
+apiVersion: kaas.mirantis.com/v1alpha1
+kind: KaaSCephCluster
+metadata:
+  name: ceph-cluster-mos-lab
+  namespace: managed-ns
+spec:
+  cephClusterSpec:
+    failureDomain: host
+    nodes:
+      # Add the exact ``nodes`` names.
+      # Obtain the name from "get bmh -o wide" ``consumer`` field.
+      cz812-mos-lab-storage-worker-noefi-58spl:
+        roles:
+        - mgr
+        - mon
+        - osd
+      # All disk configuration must be reflected in ``baremetalhostprofile``
+        storageDevices:
+        - config:
+            deviceClass: ssd
+          name: sdb
+      cz813-mos-lab-storage-worker-noefi-lr4k4:
+        roles:
+        - mgr
+        - mon
+        - osd
+        storageDevices:
+        - config:
+            deviceClass: ssd
+          name: sdb
+      cz814-mos-lab-storage-worker-noefi-z2m67:
+        roles:
+        - mgr
+        - mon
+        - osd
+        storageDevices:
+        - config:
+            deviceClass: ssd
+          name: sdb
+    pools:
+    - default: true
+      deviceClass: ssd
+      name: kubernetes
+      replicated:
+        size: 2
+      role: kubernetes
+  k8sCluster:
+    name: mos-lab
+    namespace: managed-ns

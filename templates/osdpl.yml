@@ -1,0 +1,142 @@
+apiVersion: lcm.mirantis.com/v1alpha1
+kind: OpenStackDeployment
+metadata:
+  name: osh-dev
+  namespace: openstack
+spec:
+  draft: false
+  features:
+    keystone:
+      keycloak: # Enable integration with keycloak OIDC. Login with user that has m:os@admin role. 
+        enabled: true
+        oidc:
+          OIDCClientID: os
+          OIDCOAuthSSLValidateServer: false
+          OIDCSSLValidateServer: false
+          OIDCScope: openid email profile
+        url: https://192.168.0.102  #URL for our Keycloak service on the MCC management cluster
+    neutron:
+      backend: ml2
+      dns_servers:
+      - 192.168.1.104  # IP of our CoreDNS Service
+      external_networks: #provider networks on top of which the Neutron networking will be created
+      - bridge: br-ex
+        interface: bond0.1000 #Vlan 1000 is the 192.168.2.0/24 network
+        mtu: null
+        network_types:
+        - flat
+        physnet: physnet1
+        vlan_ranges: null
+      floating_network: # floating IP network that will be created for Neutron to provide external access to your Nova instances.
+        enabled: true
+        name: public
+        physnet: physnet1
+        subnet:
+          gateway: 192.168.2.1
+          name: public-subnet
+          pool_end: 192.168.2.254
+          pool_start: 192.168.2.2
+          range: 192.168.2.0/24
+      tunnel_interface: bond0.1001 #VLAN for our 192.168.1.0/24 network
+    nova:
+      images:
+        backend: local
+      live_migration_interface: bond0.1001 #VLAN for our 192.168.1.0/24 network
+      vcpu_type: host-model
+    services:
+    - object-storage
+    ssl:
+      public_endpoints:
+        api_cert: |-
+          -----BEGIN CERTIFICATE-----
+          MIIDpjCCAo6gAwIBAgIUL5qunXRQcJUcb+GFSsbC4S623y8wDQYJKoZIhvcNAQEL
+          BQAwFTETMBEGA1UEAxMKa3ViZXJuZXRlczAeFw0yMjAyMTUxNjA1MDBaFw0yMzAy
+          MTUxNjA1MDBaMFoxCzAJBgNVBAYTAlVTMRYwFAYDVQQIEw1TYW4gRnJhbmNpc2Nv
+          MQswCQYDVQQHEwJDQTEmMCQGA1UEAwwdKi5vcGVuc3RhY2suc3ZjLmNsdXN0ZXIu
+          bG9jYWwwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDEG6YjZ9CkZB2r
+          yZnYwfaMLr8Wr9OWhHHoesn5EG0B2NAVhxcnakbAkzBCc7qaplq/9nwRcC9xu7Vi
+          a7/o/3p77gQuvFA4/pNpkwtQZoYLUUC0SZXsNhdKfn2Wi08GG8QhlCvFN76LlwcC
+          WyRfqOppvognj5uPkz+8TIBZCsCENNDeQnab9ePb9aFtExaz1f4ch81PEKiUToR8
+          yjZ7enS15/EA0v9ZDNB/3LQ+ipjKly1yaawzA58pb8zWRUH1MJMwuiqESrnJIDja
+          pdP+fHYFNSpxTBD27+giQuhFwUrbHfSfce8WidoliTQTNeqwNo26KC+VAeTGH/nu
+          5/OYa5d/AgMBAAGjgagwgaUwDgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsG
+          AQUFBwMBBggrBgEFBQcDAjAMBgNVHRMBAf8EAjAAMB0GA1UdDgQWBBTQP/NKZzD0
+          sJoPzSeI6V+VgulVazBHBgNVHREEQDA+ggwqLmp1c3Qud29ya3OCDyouaXQuanVz
+          dC53b3Jrc4IdKi5vcGVuc3RhY2suc3ZjLmNsdXN0ZXIubG9jYWwwDQYJKoZIhvcN
+          AQELBQADggEBAIdXVG3ahEvFRMPIGYn3rR06qoNcqReAKtjDm/pJph2ZgzmsZAYh
+          /mfOMGmYbyy2VN+CdLpNxBlxWHxgLI1/C1LFWxvBIULY68UTSGt388QGm+YMXWqu
+          RMcsEv7AC9LjJov8m3iVXk013xknhYfPOo5BePd9TyQKj/dDFhHXYLj6SSGtRfqc
+          eOflhx+3vR6V8L9v2z9X4QiEKwNzvJcYHOsWlpyKdko3mnL0e2FZaUDXf4noJmZ8
+          /YK8eVhC1FnlAvHyJs7gZ2TnJ4lcvQZpXc32ATAMG7HH4MueaJAcIyuxZ1xmL4tr
+          wa23Tbg5fW+Kq+W1fXzK4rsgqr/VffuscxE=
+          -----END CERTIFICATE-----
+        api_key: |-
+          -----BEGIN RSA PRIVATE KEY-----
+          MIIEpAIBAAKCAQEAxBumI2fQpGQdq8mZ2MH2jC6/Fq/TloRx6HrJ+RBtAdjQFYcX
+          J2pGwJMwQnO6mqZav/Z8EXAvcbu1Ymu/6P96e+4ELrxQOP6TaZMLUGaGC1FAtEmV
+          7DYXSn59lotPBhvEIZQrxTe+i5cHAlskX6jqab6IJ4+bj5M/vEyAWQrAhDTQ3kJ2
+          m/Xj2/WhbRMWs9X+HIfNTxColE6EfMo2e3p0tefxANL/WQzQf9y0PoqYypctcmms
+          MwOfKW/M1kVB9TCTMLoqhEq5ySA42qXT/nx2BTUqcUwQ9u/oIkLoRcFK2x30n3Hv
+          FonaJYk0EzXqsDaNuigvlQHkxh/57ufzmGuXfwIDAQABAoIBAQCg4qYMSfFLzK7i
+          7oP+5jHkk71FWX5W79WbipEEektTxpH/91Ixjej5uEdRXSxsD6pH7mmezNC/l+WZ
+          FxjciCvuXDimNuwBtikt5erUTSgPRNu2jOAoZ7/354oU5bkxI7pmae7232K9lmuz
+          rR5MNIILurps6k4PHhid3I03f7CtRE7UWtKlh7YSLIUyrOdNrZ2GIs/4mUkSDScm
+          dtzG4FTNRry9EhL3xNxXvzZ35TzpOy7MXmKrfL59qDBbq0Omnntv6L5Rzu+OYFDF
+          vYxwNB6uFA/C929VxsF4pO0DKeZYwOeGQ8a+FLGNmSmMUHGf0zj9bk6AfTgSxrbP
+          PSVSYVHBAoGBANFyywUqxsv3vH1c/Pdhu2QWwi4pqffK+WtAZlVMt1bobh6Ti5op
+          APhXZ5igZ+xP/7ctGbg6TaX4CV+Ff6qAF6Ys5hdXz/7n7i5kDvkQAj4ahzhS5x63
+          /fJzTXZ6GVbv6mzWX8xa0Uc5ZAtcivMOXydMI7bXv2EzIUAoDAp95NGxAoGBAO+x
+          0BEKq32pYRxfTj/gT+7OA8HPy5EM4E5O2F2PfSxiQu7Lycyw7/1jmvgj5LIkhk1H
+          B8GRd88cK7DNzDty/gE4aYOnX77dC05vs+rzMrLJq4v7fN2wpXUhE9VOzIqh1QQN
+          PO0VMww2V84Y+xA82UDP0cXZyCJsVDQusf0faJgvAoGAA6mYNzzqQQLR/vczTTge
+          SL/FIX2FBVo9RkzX/UHcKt7hnhNCa62v4KfWneqgJpe3hwJ44qnSVcaik1MISnj2
+          8Ob0FxBoCLMRjSoewOgwwdlA6BE7DWR2QlkVz66O5uBHHyQYhMBJzI8KWtCBdYKY
+          010XeskHBbIZMMACheRxreECgYBO49U5ZquexlrB/dRBTdDBJmkyJvQ3H2fMHkM0
+          N//Y1dZ1xfj7N9klKt1cgmPJBiB12sUAvqISNpFitblcb7KOMET6IeJvbU1FWZp7
+          3+N12M5vWix0wqkSbfqbID5N+omjtb+xwGJ2yIQJv0sSwxQ2MrA2UEGAourr6dqH
+          FwlT3QKBgQCEQwfHipYdCwTQdqWbPeu8Lk4qvQJy9vLP+/XieBkviIxbTFe4Qtls
+          RHfEb+3omhckoPjxfVUjyFbPNh4hFNVQuWeAws5yxXM/Tj6qbkGK7XMEmKoUZOva
+          QVHrGBOfemx9ApHI7NRYlV5zJRnli+0xcr6/bJ8BQTji7xtJo6Q/mQ==
+          -----END RSA PRIVATE KEY-----
+        ca_cert: |-
+          -----BEGIN CERTIFICATE-----
+          MIICyDCCAbCgAwIBAgIBADANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwprdWJl
+          cm5ldGVzMB4XDTE5MDcxNTEyMTczMFoXDTI5MDcxMjEyMTczMFowFTETMBEGA1UE
+          AxMKa3ViZXJuZXRlczCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMKs
+          3cxUNr7uIvIpnYAu9hM03zIgycdzar1deSIU2EZkEv20QOa6+w/yUxRhQK1pFhok
+          ceqVuOnGnSUW3Uf+mvAd0IgCkCUIWnDOkZE83MhKTa7FXZpEYSBpjNwziLyAffQB
+          IXdXs0Zf4RHoSmm2msJy2iL6tKzPWrUI8iJINKY687RubX7WTxvFUd/By6VMg1H/
+          F3UEi/WGBCrYbWeZhjk222N/5T1PNkhZjLM4l7ukedUaK2b9bKsRU7N/p2f9hhDJ
+          +x2arKmGqGkKkRQnS/19Nlwom2cSU8z36nOghJHv6hWIMbY/dUT8sGLlL/nSa2d0
+          38rhFhOpB/tu3Wu50NECAwEAAaMjMCEwDgYDVR0PAQH/BAQDAgKkMA8GA1UdEwEB
+          /wQFMAMBAf8wDQYJKoZIhvcNAQELBQADggEBACpTF3CTDaRUOUnIKo2p7x/HzJGM
+          DwrQqzKOJ1I4WzeuGVLJ4OUn9wU7jce2oMYZmOw+2opG7CvqM2xx6AQa2OxqJt8E
+          KoqviidpTgXqWhAaRbRGsF1IxEwEgbiI9sH0f0pQRZBVPKv+LnNlQoip9ZMgoHJ8
+          f25YSPKBHhMLEvCdsWy6ZRqSx7lk0NK+NiFeL3ZDlkiVveNmejM2OSzsov2wkUu3
+          Hvo/ugw5tNhtX7Q1iEyE2aFvsmqE1PTOE3zly7xRALAX8WYD5lNc0qGFvoh3x+79
+          uKVi5MUP48Voc72rJ0n7iaK8dr/byL6S5Qz2PuG9slbDQrDoacBeyjO6hiQ=
+          -----END CERTIFICATE-----
+    stacklight:
+      user:
+        password: stacklight
+  internal_domain_name: cluster.local
+  local_volume_storage_class: openstack-operator-bind-mounts
+  openstack_version: victoria
+  preset: compute
+  public_domain_name: it.just.works
+  services:
+    networking:
+      neutron:
+        values:
+          conf:
+            neutron:
+              DEFAULT:
+                global_physnet_mtu: 1480
+    orchestration:
+      heat:
+        values:
+          conf:
+            heat:
+              clients_heat:
+                insecure: true
+  size: tiny
